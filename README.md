@@ -2,7 +2,6 @@
  
  >  整合SpringBoot MySQL Mybatis CXF/JSR-RS 
  >> 实现WebServices
- 
  >> 实现Restful
      
 ##  使用 
