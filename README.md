@@ -1,5 +1,4 @@
-##  SpringBoot-整合-CXF 说明
- 
+##  SpringBoot-整合-CXF 说明[demo项目]
 ### 
     整合SpringBoot MySQL Mybatis CXF/JSR-RS 
     实现WebServices
@@ -11,7 +10,7 @@
     2）修改application.properties修改数据源
     3）启动主类
 
-##  SpringBoot-整合-MongoDB 说明
+##  SpringBoot-整合-MongoDB 说明[mongodbTest]
 
 ###  使用
 
