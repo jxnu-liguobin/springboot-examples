@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jxnu.dao.StudentDao">
+	<resultMap type="cn.edu.jxnu.entity.Student" id="Student">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="address" column="address" />
+		<result property="age" column="age" />
+	</resultMap>
+	<!-- 定义字段集合 -->
+	<sql id="studentInformation">
+		id,name,sex,address,age
+	</sql>
+	<select id="getStudentById" resultMap="Student" flushCache="true"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="studentInformation" />
+		from student where id=#{id}
+	</select>
+	<!-- 刷新间隔 -->
+	<cache flushInterval="600000" />
+</mapper>

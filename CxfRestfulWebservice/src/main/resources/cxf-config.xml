@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="   
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd   
+       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd   
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 将Bean托管给Spring -->
+	<bean id="studentService" class="cn.edu.jxnu.resource.StudentInterfaceImpl">
+	</bean>
+	<!-- 配置需要暴露的BeanService -->
+	<jaxrs:server id="restContainer" address="/students"> <!-- 暴露restful api 类似于前文提到的webService【暴露soap】 -->
+		<jaxrs:serviceBeans>
+			<!-- 相当于打包发布服务 -->
+			<ref bean="studentService" />
+		</jaxrs:serviceBeans>
+		<!-- 提供一个json转化，没有这个不能自动返回json jsonProvider就是前面@Bean生成的在CxfConfig -->
+		<jaxrs:providers>
+			<ref bean="jsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+</beans>  
