@@ -14,9 +14,9 @@
 
 ###  使用
     启动主类
-    新增 127.0.0.1：9000/save
-    查询单个  127.0.0.1：9000/findByName
-    查询List  127.0.0.1：9000/find
+    新增 127.0.0.1:9000/save
+    查询单个  127.0.0.1:9000/findByName
+    查询List  127.0.0.1:9000/find
 
     
 ###  SpringBoot-整合-Swagger 说明【swaggerTest】
