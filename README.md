@@ -10,7 +10,7 @@
     2）修改application.properties修改数据源
     3）启动主类
 
-##  SpringBoot-整合-MongoDB 说明[mongodbTest]
+##  SpringBoot-整合-MongoDB 说明【mongodbTest】
 
 ###  使用
     启动主类
@@ -19,7 +19,7 @@
     查询List  127.0.0.1：9000/find
 
     
-###  SpringBoot-整合-Swagger 说明[swaggerTest]
+###  SpringBoot-整合-Swagger 说明【swaggerTest】
 
 ###  使用
 
