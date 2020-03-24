@@ -27,5 +27,5 @@
 */.mvn/
 mvnw
 mvnw.cmd
-/*/.settings/
-/*/.mvn/
+*/.settings/
+*/.mvn/
