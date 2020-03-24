@@ -13,41 +13,41 @@ springboot-exmaples
      
 * 使用 
 ```
-1）mysql中新建demo库运行resources下sql文件
-2）修改application.properties修改数据源
-3）启动主类
+1.mysql中新建demo库运行resources下sql文件
+2.修改application.properties修改数据源
+3.启动Application.java类
 ```
 
 > mongodb
 
 * 使用
 ```
-启动主类
-新增 127.0.0.1:9000/save
-查询单个  127.0.0.1:9000/findByName
-查询List  127.0.0.1:9000/find
+1.启动Application.java类
+1.新增 127.0.0.1:9000/save
+2.查询单个  127.0.0.1:9000/findByName
+3.查询List  127.0.0.1:9000/find
 ```
     
 > swagger
 
 * 使用
 ```
-启动主类
-访问localhost:8080/swagger-ui.html
+1.启动Application.java类
+2.访问localhost:8080/swagger-ui.html
 ```
 
 > graphql
 
 * 使用
 ```
-1.启动 Application.java
+1.启动Application.java类
 2.访问http://localhost:8080/
 3.查询
-调用方法1：无参方法
+调用方法hello：无参方法
 {
   hello
 }
-调用方法2：有参方法
+调用方法echo：有参方法
 {
   echo(toEcho:"charming")
 }
@@ -65,7 +65,7 @@ springboot-exmaples
     id
   }
 }
-调用hero方法：
+调用hero方法：枚举参数
 {
   hero(episode: NEWHOPE) {
     id
