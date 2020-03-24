@@ -1,9 +1,9 @@
 springboot-exmaples
 --
 
-子模块之间相互无关联
+$ 表示子模块是依赖父级项目的（子模块本身就是多个模块组成的，如dubbo）
 
-> cxf
+> cxf  
 
 ```
 整合SpringBoot MySQL Mybatis CXF/JSR-RS 
@@ -18,7 +18,7 @@ springboot-exmaples
 3.启动Application.java类
 ```
 
-> mongodb
+> mongodb 
 
 * 使用
 ```
@@ -28,7 +28,7 @@ springboot-exmaples
 3.查询List  127.0.0.1:9000/find
 ```
     
-> swagger
+> swagger 
 
 * 使用
 ```
@@ -36,7 +36,7 @@ springboot-exmaples
 2.访问localhost:8080/swagger-ui.html
 ```
 
-> graphql
+> graphql 
 
 * 使用
 ```
@@ -72,4 +72,24 @@ springboot-exmaples
   }
 }
 其他方法参考 starWarsSchemaAnnotated.graphqls
+```
+
+> dubbo $
+```
+1.启动zookeeper
+2.启动dubbo-admin客户端(需自己将官方的war放进tomcat的webapps/ROOT下) tomcat端口
+3.启动生产者(dubbo-provider DubboProviderLauncher.java类) 端口8081
+4.启动消费者(duboo-consumer DubboConsumerLauncher.java类) 端口8082
+5.查询
+    1）浏览器输入: http://127.0.0.1:8082/sayHello/dubbo
+    2）输出String: Hello dubbo
+    3）浏览器输入:http://localhost:8082/getCity
+    4）输出JSON/对象:
+        {
+            "id": 1,
+            "provinceId": 2,
+            "cityName": "南昌",
+            "description": "是我的故乡"
+        }
+使用dubbo的管理平台(dubbo-admin应用放在ROOT下则路径:http://localhost:8088) 查看结果,初始账户为:root/root
 ```
