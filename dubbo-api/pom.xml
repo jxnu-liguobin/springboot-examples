@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.dreamylost</groupId>
-        <artifactId>springboot-exampes</artifactId>
+        <artifactId>springboot-examples</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>dubbo-api</artifactId>

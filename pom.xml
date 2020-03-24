@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.dreamylost</groupId>
-    <artifactId>springboot-exampes</artifactId>
+    <artifactId>springboot-examples</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
@@ -14,16 +14,24 @@
         <module>mongodb</module>
         <module>cxf</module>
         <module>graphql</module>
+
         <module>dubbo-api</module>
         <module>dubbo-provider</module>
         <module>dubbo-consumer</module>
+
+        <module>cloud-ribbon-consumer</module>
+        <module>cloud-central</module>
+        <module>cloud-config-client</module>
+        <module>cloud-config-server</module>
+        <module>cloud-hello-provider</module>
+        <module>cloud-user-provider</module>
     </modules>
 
 
     <properties>
         <java.version>1.8</java.version>
         <curator.version>4.0.1</curator.version>
-        <zookeeper.version>3.4.11</zookeeper.version>
+        <zookeeper.version>3.4.14</zookeeper.version>
         <dubbo-spring-boot-starter.version>2.0.0</dubbo-spring-boot-starter.version>
     </properties>
 
