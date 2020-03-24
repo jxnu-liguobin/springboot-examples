@@ -1,0 +1,6 @@
+type Query {
+    #定义无参方法
+    hello: String
+    #定义有参方法
+    echo(toEcho: String): String
+}

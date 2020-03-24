@@ -35,3 +35,41 @@ springboot-exmaples
 启动主类
 访问localhost:8080/swagger-ui.html
 ```
+
+> graphql
+
+* 使用
+```
+1.启动 Application.java
+2.访问http://localhost:8080/
+3.查询
+调用方法1：无参方法
+{
+  hello
+}
+调用方法2：有参方法
+{
+  echo(toEcho:"charming")
+}
+```
+
+> graphql-complete
+
+```
+1.启动 Application.java
+2.访问http://localhost:8080/
+3.查询
+调用droid方法：
+{
+  droid(id: "1001") {
+    id
+  }
+}
+调用hero方法：
+{
+  hero(episode: NEWHOPE) {
+    id
+  }
+}
+其他方法参考 starWarsSchemaAnnotated.graphqls
+```

@@ -1,0 +1,63 @@
+# 背景是星球大战
+# 必须至少具有一个查询根类型
+#
+schema {
+    query: Query
+}
+
+#定义查询
+type Query {
+    #指定一个Episode类型的参数
+    hero(
+        episode: Episode
+    ) : Character //返回
+    #指定一个String类型的id
+    human(
+        id : String
+    ) : Human
+    #指定一个String类型的非空id
+    droid(
+        id: ID!
+    ): Droid
+}
+#定义枚举类型 电影 指星球大战系列
+enum Episode {
+    NEWHOPE
+    EMPIRE
+    JEDI
+}
+
+#定义接口 角色
+interface Character {
+    #角色的id
+    id: ID!
+    #角色名字
+    name: String!
+    #角色的朋友，如果没有，则为空列表
+    friends: [Character]
+    #出现在哪些电影中
+    appearsIn: [Episode]!
+    #所有关于他们过去的秘密。
+    secretBackstory : String @deprecated(reason : "We have decided that this is not canon")
+}
+
+#人
+type Human implements Character {
+    id: ID!
+    name: String!
+    friends: [Character]
+    appearsIn: [Episode]!
+    homePlanet: String
+    secretBackstory : String @deprecated(reason : "We have decided that this is not canon")
+}
+
+#机器人
+type Droid implements Character {
+    id: ID!
+    name: String!
+    friends: [Character]
+    appearsIn: [Episode]!
+    primaryFunction: String
+    secretBackstory : String @deprecated(reason : "We have decided that this is not canon")
+}
+

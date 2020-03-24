@@ -6,12 +6,14 @@
 
     <groupId>com.github.dreamylost</groupId>
     <artifactId>springboot-exampes</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <modules>
         <module>swagger</module>
         <module>mongodb</module>
         <module>cxf</module>
+        <module>graphql</module>
     </modules>
 
 </project>
