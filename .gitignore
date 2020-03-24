@@ -24,8 +24,5 @@
 /nbdist/
 /.nb-gradle/
 
-*/.mvn/
 mvnw
 mvnw.cmd
-*/.settings/
-*/.mvn/
