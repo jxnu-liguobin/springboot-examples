@@ -25,6 +25,10 @@
         <module>cloud-config-server</module>
         <module>cloud-hello-provider</module>
         <module>cloud-user-provider</module>
+
+        <module>graphql</module>
+        <module>graphql-complete</module>
+
     </modules>
 
 

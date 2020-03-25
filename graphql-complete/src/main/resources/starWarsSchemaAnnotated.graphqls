@@ -8,17 +8,11 @@ schema {
 #定义查询
 type Query {
     #指定一个Episode类型的参数
-    hero(
-        episode: Episode
-    ) : Character //返回
+    hero(episode: Episode) : Character //返回
     #指定一个String类型的id
-    human(
-        id : String
-    ) : Human
+    human(id : String) : Human
     #指定一个String类型的非空id
-    droid(
-        id: ID!
-    ): Droid
+    droid(id: ID!) : Droid
 }
 #定义枚举类型 电影 指星球大战系列
 enum Episode {
@@ -28,12 +22,13 @@ enum Episode {
 }
 
 #定义接口 角色
+#文档https://graphql.org/learn/schema/
 interface Character {
-    #角色的id
+    #角色的id，非人类可读的唯一性id，这里没搞明白
     id: ID!
     #角色名字
     name: String!
-    #角色的朋友，如果没有，则为空列表
+    #角色的朋友，如果没有，则为空列表，[]表示数组，!表示不为空
     friends: [Character]
     #出现在哪些电影中
     appearsIn: [Episode]!
