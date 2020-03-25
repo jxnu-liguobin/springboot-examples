@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @version： V1.0
  */
 @Component//由Spring管理
-@WebService(endpointInterface = "cn.edu.jxnu.service.StudentService") // webservice接口的全类名
+@WebService(endpointInterface = "com.github.dreamylost.service.StudentService") // webservice接口的全类名
 public class StudentServiceImpl implements StudentService {
 
     /**

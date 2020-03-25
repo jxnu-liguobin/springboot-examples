@@ -14,7 +14,9 @@ import org.springframework.context.annotation.Configuration;
 import javax.xml.ws.Endpoint;
 
 /**
- * @author： liguobin @Description： @时间： 2018-3-7 下午4:11:57 @version： V1.0
+ * @author liguobin
+ * @version V1.0
+ * @time 2018-3-7 下午4:11:57
  */
 @Configuration
 public class CxfConfig {

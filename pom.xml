@@ -14,6 +14,8 @@
         <module>mongodb</module>
         <module>cxf</module>
         <module>graphql</module>
+        <module>undertow</module>
+
 
         <module>dubbo-api</module>
         <module>dubbo-provider</module>
