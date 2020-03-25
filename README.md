@@ -130,3 +130,13 @@ $ 表示子模块是依赖父级项目的（子模块本身就是多个模块组
 1.启动Application.java类
 2.访问 http://localhost:8084/
 ```    
+
+> redis
+
+* 使用
+```
+1.启动redis-server
+2.启动Application.java类
+3.请求http://localhost:8081/?p=参数
+4.连接redis-cli，查看key=hello value=[\"com.github.dreamylost.User\",{\"uid\":123,\"userName\":\"zhangsan\",\"passWord\":\"pwd\"}]
+```

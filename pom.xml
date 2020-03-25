@@ -15,6 +15,7 @@
         <module>cxf</module>
         <module>graphql</module>
         <module>undertow</module>
+        <module>redis</module>
 
 
         <module>dubbo-api</module>
