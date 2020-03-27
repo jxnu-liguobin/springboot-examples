@@ -25,36 +25,7 @@ import java.util.stream.Collectors;
 @Component
 public class StarWarsWiring {
 
-    //数据加载
-    private final DataLoaderRegistry dataLoaderRegistry;
-
-    public StarWarsWiring() {
-        this.dataLoaderRegistry = new DataLoaderRegistry();
-        dataLoaderRegistry.register("characters", newCharacterDataLoader());
-    }
-
-    @Bean
-    public DataLoaderRegistry getDataLoaderRegistry() {
-        return dataLoaderRegistry;
-    }
-
-
-    private List<Object> getCharacterDataViaBatchHTTPApi(List<String> keys) {
-        return keys.stream().map(StarWarsData::getCharacterData).collect(Collectors.toList());
-    }
-
-    //批处理
-    private BatchLoader<String, Object> characterBatchLoader = keys -> {
-
-        //我们在这里使用多线程
-        return CompletableFuture.supplyAsync(() -> getCharacterDataViaBatchHTTPApi(keys));
-    };
-
-    private DataLoader<String, Object> newCharacterDataLoader() {
-        return new DataLoader<>(characterBatchLoader);
-    }
-
-    //人类 数据获取器
+    //人类 数据获取
     DataFetcher humanDataFetcher = environment -> {
         String id = environment.getArgument("id");
         Context ctx = environment.getContext();
@@ -62,17 +33,20 @@ public class StarWarsWiring {
     };
 
 
+    //机器人 数据获取
     DataFetcher droidDataFetcher = environment -> {
         String id = environment.getArgument("id");
         Context ctx = environment.getContext();
         return ctx.getCharacterDataLoader().load(id);
     };
 
+    //英雄 数据获取
     DataFetcher heroDataFetcher = environment -> {
         Context ctx = environment.getContext();
         return ctx.getCharacterDataLoader().load("2001"); // R2D2
     };
 
+    //朋友 数据获取
     DataFetcher friendsDataFetcher = environment -> {
         FilmCharacter character = environment.getSource();
         List<String> friendIds = character.getFriends();
@@ -80,18 +54,53 @@ public class StarWarsWiring {
         return ctx.getCharacterDataLoader().loadMany(friendIds);
     };
 
+    //数据加载
+    private final DataLoaderRegistry dataLoaderRegistry;
+
+    public StarWarsWiring() {
+        this.dataLoaderRegistry = new DataLoaderRegistry();
+        //注册所有角色数据
+        dataLoaderRegistry.register("characters", newCharacterDataLoader());
+    }
+
+    //将DataLoaderRegistry作为bean
+    @Bean
+    public DataLoaderRegistry getDataLoaderRegistry() {
+        return dataLoaderRegistry;
+    }
+
+    //批量根据id获取角色的信息数据
+    private List<Object> getCharacterDataViaBatchHTTPApi(List<String> keys) {
+        return keys.stream().map(StarWarsData::getCharacterData).collect(Collectors.toList());
+    }
+
+    //批处理，使用多线程
+    private BatchLoader<String, Object> characterBatchLoader = keys -> {
+        //我们在这里使用多线程
+        return CompletableFuture.supplyAsync(() -> getCharacterDataViaBatchHTTPApi(keys));
+    };
+
+    //加载所有角色数据
+    private DataLoader<String, Object> newCharacterDataLoader() {
+        return new DataLoader<>(characterBatchLoader);
+    }
+
+
     /**
      * graphql类型系统中的角色是一个接口，需要确定要返回的具体graphql对象类型
      */
     TypeResolver characterTypeResolver = environment -> {
+        //类型解析
         FilmCharacter character = environment.getObject();
         if (character instanceof Human) {
-            //人类或机器人
+            //人类
             return (GraphQLObjectType) environment.getSchema().getType("Human");
         } else {
+            //机器人
             return (GraphQLObjectType) environment.getSchema().getType("Droid");
         }
     };
 
+    //枚举类型解析
     EnumValuesProvider episodeResolver = Episode::valueOf;
 }

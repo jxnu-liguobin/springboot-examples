@@ -71,22 +71,13 @@ public class GraphQLController {
         if (variables == null) {
             variables = new LinkedHashMap<>();
         }
+        //执行请求， 操作 查询 变量参数
         executeGraphqlQuery(httpServletResponse, operationName, query, variables);
     }
 
     //执行gql
     private void executeGraphqlQuery(HttpServletResponse httpServletResponse, String operationName, String query, Map<String, Object> variables) throws IOException {
-        //
-        // the context object is something that means something to down stream code.  It is instructions
-        // from yourself to your other code such as DataFetchers.  The engine passes this on unchanged and
-        // makes it available to inner code
-        //
-        // the graphql guidance says  :
-        //
-        //  - GraphQL should be placed after all authentication middleware, so that you
-        //  - have access to the same session and user information you would in your
-        //  - HTTP endpoint handlers.
-        //
+        //授权 执行请求
         Context context = contextProvider.newContext();
 
         ExecutionInput executionInput = ExecutionInput.newExecutionInput()

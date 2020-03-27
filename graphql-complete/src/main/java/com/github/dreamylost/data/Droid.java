@@ -3,7 +3,7 @@ package com.github.dreamylost.data;
 import java.util.List;
 
 /**
- * 机器人
+ * 机器人角色
  *
  * @author 梦境迷离
  * @time 2020年03月24日17:57:08
@@ -13,6 +13,7 @@ public class Droid implements FilmCharacter {
     final String name;
     final List<String> friends;
     final List<Integer> appearsIn;
+    //机器人的主要功能
     final String primaryFunction;
 
     public Droid(String id, String name, List<String> friends, List<Integer> appearsIn, String primaryFunction) {
