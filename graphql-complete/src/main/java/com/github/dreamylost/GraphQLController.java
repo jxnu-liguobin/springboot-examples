@@ -38,6 +38,7 @@ public class GraphQLController {
         this.contextProvider = contextProvider;
     }
 
+    //前端js中写死该URI
     @RequestMapping(value = "/graphql", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public void graphqlGET(@RequestParam("query") String query,
@@ -105,6 +106,7 @@ public class GraphQLController {
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json");
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        //gql一般返回json
         String body = objectMapper.writeValueAsString(result);
         PrintWriter writer = httpServletResponse.getWriter();
         writer.write(body);
