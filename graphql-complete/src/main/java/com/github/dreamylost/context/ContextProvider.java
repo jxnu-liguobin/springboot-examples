@@ -13,12 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContextProvider {
 
-    final DataLoaderRegistry dataLoaderRegistry;
-
     @Autowired
-    public ContextProvider(DataLoaderRegistry dataLoaderRegistry) {
-        this.dataLoaderRegistry = dataLoaderRegistry;
-    }
+    private DataLoaderRegistry dataLoaderRegistry;
 
     public Context newContext() {
         return new Context(dataLoaderRegistry);

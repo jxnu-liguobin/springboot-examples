@@ -1,9 +1,14 @@
 package com.github.dreamylost;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dreamylost.Instrumentation.CustomInstrumentation;
 import com.github.dreamylost.Instrumentation.FieldValidationBuilder;
+import com.github.dreamylost.context.Context;
+import com.github.dreamylost.context.ContextProvider;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import graphql.ExecutionInput;
+import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.execution.instrumentation.ChainedInstrumentation;
 import graphql.execution.instrumentation.Instrumentation;
@@ -20,31 +25,46 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Map;
 
 import static graphql.execution.instrumentation.dataloader.DataLoaderDispatcherInstrumentationOptions.newOptions;
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 import static java.util.Arrays.asList;
 
 /**
- * 处理/graphql请求
+ * 提供graphql能力
  *
  * @author 梦境迷离
  * @time 2020年03月24日17:57:08
  */
 @Component
 public class GraphQLProvider {
-    private GraphQL graphQL;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private DataLoaderRegistry dataLoaderRegistry;
+
+    @Autowired
     private StarWarsWiring starWarsWiring;
 
     @Autowired
-    public GraphQLProvider(DataLoaderRegistry dataLoaderRegistry, StarWarsWiring starWarsWiring) {
-        this.dataLoaderRegistry = dataLoaderRegistry;
-        this.starWarsWiring = starWarsWiring;
+    private ContextProvider contextProvider;
+
+    private GraphQL graphQL;
+
+    //作为bean，使用该bean执行gql请求
+    @Bean
+    public GraphQL graphQL() {
+        return graphQL;
     }
 
+    //初始化gql
     @PostConstruct
     public void init() throws IOException {
         //初始化读取gql schema文件
@@ -60,19 +80,37 @@ public class GraphQLProvider {
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).instrumentation(instrumentation).build();
     }
 
+    //执行gql
+    public void executeGraphqlQuery(HttpServletResponse httpServletResponse, String operationName, String query, Map<String, Object> variables) throws IOException {
+        //授权 执行请求
+        Context context = contextProvider.newContext();
 
-    //加载解析schema文件
-    private GraphQLSchema buildSchema(String sdl) {
-        //读取从resources下加载解析的gql schema文件的字符串
-        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
-        //创建运行时类型织入
-        RuntimeWiring runtimeWiring = buildWiring();
-        SchemaGenerator schemaGenerator = new SchemaGenerator();
-        //创建gql schema对象，构造可执行请求的gql
-        return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+        ExecutionInput executionInput = ExecutionInput.newExecutionInput()
+                .query(query)
+                .variables(variables)
+                .operationName(operationName)
+                .context(context)
+                .build();
+
+        ExecutionResult executionResult = graphQL.execute(executionInput);
+        handleNormalResponse(httpServletResponse, executionResult);
+    }
+
+    public void handleNormalResponse(HttpServletResponse httpServletResponse, ExecutionResult executionResult) throws IOException {
+        Map<String, Object> result = executionResult.toSpecification();
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        //gql一般返回json
+        String body = objectMapper.writeValueAsString(result);
+        PrintWriter writer = httpServletResponse.getWriter();
+        writer.write(body);
+        writer.close();
     }
 
     //动态映射
+    //运行时织入包含DataFetcher、TypeResolvers和自定义Scalar，它们是制作完全可执行的schema所必需的。
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 //查询方法
@@ -98,10 +136,15 @@ public class GraphQLProvider {
                 .build();
     }
 
-    //作为bean，使用该bean执行gql请求
-    @Bean
-    public GraphQL graphQL() {
-        return graphQL;
+    //加载解析schema文件
+    private GraphQLSchema buildSchema(String sdl) {
+        //读取从resources下加载解析的gql schema文件的字符串
+        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
+        //创建运行时类型织入
+        RuntimeWiring runtimeWiring = buildWiring();
+        SchemaGenerator schemaGenerator = new SchemaGenerator();
+        //创建gql schema对象，构造可执行请求的gql
+        return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
     }
 
 }

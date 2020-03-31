@@ -1,4 +1,4 @@
-package com.github.dreamylost.data;
+package com.github.dreamylost.domain;
 
 /**
  * 电影 电视剧 枚举类型

@@ -2,11 +2,6 @@ package com.github.dreamylost;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.dreamylost.context.Context;
-import com.github.dreamylost.context.ContextProvider;
-import graphql.ExecutionInput;
-import graphql.ExecutionResult;
-import graphql.GraphQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -27,16 +21,11 @@ import java.util.Map;
 @RestController
 public class GraphQLController {
 
-    private final GraphQL graphql;
-    private final ObjectMapper objectMapper;
-    private final ContextProvider contextProvider;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
-    public GraphQLController(GraphQL graphql, ObjectMapper objectMapper, ContextProvider contextProvider) {
-        this.graphql = graphql;
-        this.objectMapper = objectMapper;
-        this.contextProvider = contextProvider;
-    }
+    private GraphQLProvider graphQLProvider;
 
     //前端js中写死该URI
     @RequestMapping(value = "/graphql", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,7 +43,7 @@ public class GraphQLController {
             variables = objectMapper.readValue(variablesJson, new TypeReference<Map<String, Object>>() {
             });
         }
-        executeGraphqlQuery(httpServletResponse, operationName, query, variables);
+        graphQLProvider.executeGraphqlQuery(httpServletResponse, operationName, query, variables);
     }
 
 
@@ -72,35 +61,6 @@ public class GraphQLController {
             variables = new LinkedHashMap<>();
         }
         //执行请求， 操作 查询 变量参数
-        executeGraphqlQuery(httpServletResponse, operationName, query, variables);
-    }
-
-    //执行gql
-    private void executeGraphqlQuery(HttpServletResponse httpServletResponse, String operationName, String query, Map<String, Object> variables) throws IOException {
-        //授权 执行请求
-        Context context = contextProvider.newContext();
-
-        ExecutionInput executionInput = ExecutionInput.newExecutionInput()
-                .query(query)
-                .variables(variables)
-                .operationName(operationName)
-                .context(context)
-                .build();
-
-        ExecutionResult executionResult = graphql.execute(executionInput);
-        handleNormalResponse(httpServletResponse, executionResult);
-    }
-
-    private void handleNormalResponse(HttpServletResponse httpServletResponse, ExecutionResult executionResult) throws IOException {
-        Map<String, Object> result = executionResult.toSpecification();
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        httpServletResponse.setContentType("application/json");
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        //gql一般返回json
-        String body = objectMapper.writeValueAsString(result);
-        PrintWriter writer = httpServletResponse.getWriter();
-        writer.write(body);
-        writer.close();
+        graphQLProvider.executeGraphqlQuery(httpServletResponse, operationName, query, variables);
     }
 }

@@ -1,4 +1,7 @@
-package com.github.dreamylost.data;
+package com.github.dreamylost.dao;
+
+import com.github.dreamylost.domain.Droid;
+import com.github.dreamylost.domain.Human;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

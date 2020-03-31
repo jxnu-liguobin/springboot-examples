@@ -1,4 +1,4 @@
-package com.github.dreamylost.data;
+package com.github.dreamylost.domain;
 
 import java.util.List;
 
