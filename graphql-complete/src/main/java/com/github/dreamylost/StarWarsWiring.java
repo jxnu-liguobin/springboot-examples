@@ -10,6 +10,7 @@ import graphql.schema.GraphQLObjectType;
 import graphql.schema.TypeResolver;
 import graphql.schema.idl.EnumValuesProvider;
 import org.dataloader.BatchLoader;
+import org.dataloader.CacheMap;
 import org.dataloader.DataLoader;
 import org.dataloader.DataLoaderRegistry;
 import org.springframework.context.annotation.Bean;
@@ -80,8 +81,40 @@ public class StarWarsWiring {
         return CompletableFuture.supplyAsync(() -> getCharacterDataViaBatchHTTPApi(keys));
     };
 
+
+    //缓存，根据需要使用存储方式。这里都只是为了过编译，实际没有使用
+    CacheMap<String, Object> crossRequestCacheMap = new CacheMap<String, Object>() {
+        @Override
+        public boolean containsKey(String key) {
+            return true;
+        }
+
+        @Override
+        public Object get(String key) {
+            return new Object();
+        }
+
+        @Override
+        public CacheMap<String, Object> set(String key, Object value) {
+            return this;
+        }
+
+        @Override
+        public CacheMap<String, Object> delete(String key) {
+            return this;
+        }
+
+        @Override
+        public CacheMap<String, Object> clear() {
+            return this;
+        }
+    };
+
     //加载所有角色数据
     private DataLoader<String, Object> newCharacterDataLoader() {
+        //使用缓存
+        //DataLoaderOptions options = DataLoaderOptions.newOptions().setCacheMap(crossRequestCacheMap);
+        //DataLoader.newDataLoader(characterBatchLoader, options);
         return new DataLoader<>(characterBatchLoader);
     }
 

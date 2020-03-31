@@ -1,5 +1,7 @@
 package com.github.dreamylost;
 
+import com.github.dreamylost.Instrumentation.CustomInstrumentation;
+import com.github.dreamylost.Instrumentation.FieldValidationBuilder;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import graphql.GraphQL;
@@ -50,10 +52,14 @@ public class GraphQLProvider {
         String sdl = Resources.toString(url, Charsets.UTF_8);
         GraphQLSchema graphQLSchema = buildSchema(sdl);
         //本示例使用DataLoader技术来确保最有效地加载数据（在本例中为StarWars字符），通过graphql上下文对象将其传递给数据获取程序
+        //DataLoaderDispatcherInstrumentation也是一种Instrumentation，用来分发dataloader
         DataLoaderDispatcherInstrumentation dlInstrumentation = new DataLoaderDispatcherInstrumentation(dataLoaderRegistry, newOptions().includeStatistics(true));
-        Instrumentation instrumentation = new ChainedInstrumentation(asList(new TracingInstrumentation(), dlInstrumentation));
+        //ChainedInstrumentation可以组合多个仪器，TracingInstrumentation是追踪，FieldValidationBuilder是字段验证
+        //CustomInstrumentation是自定义的仪器
+        Instrumentation instrumentation = new ChainedInstrumentation(asList(FieldValidationBuilder.builder(), new TracingInstrumentation(), new CustomInstrumentation(), dlInstrumentation));
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).instrumentation(instrumentation).build();
     }
+
 
     //加载解析schema文件
     private GraphQLSchema buildSchema(String sdl) {
