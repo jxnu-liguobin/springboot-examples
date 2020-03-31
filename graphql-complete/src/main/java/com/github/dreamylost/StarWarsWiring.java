@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
- * 这是用于将获取行为置于graphql字段后面的连线
+ * 数据加载、获取、类型解析，为GraphQLProvider提供服务
  */
 @Component
 public class StarWarsWiring {
