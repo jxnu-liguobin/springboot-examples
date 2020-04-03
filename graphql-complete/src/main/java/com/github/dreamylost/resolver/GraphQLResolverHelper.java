@@ -3,7 +3,9 @@ package com.github.dreamylost.resolver;
 import com.github.dreamylost.domain.Episode;
 import com.github.dreamylost.domain.FilmCharacter;
 import com.github.dreamylost.domain.Human;
+import com.github.dreamylost.scalar.EmailScalar;
 import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLScalarType;
 import graphql.schema.TypeResolver;
 import graphql.schema.idl.EnumValuesProvider;
 
@@ -31,4 +33,6 @@ public class GraphQLResolverHelper {
 
     //枚举类型解析
     public static EnumValuesProvider episodeResolver = Episode::valueOf;
+
+    public static GraphQLScalarType Email = EmailScalar.Email;
 }

@@ -1,3 +1,5 @@
+scalar Email  #一定要在最开始定义自定义标量
+
 # 背景是星球大战
 # 必须至少具有一个查询根类型
 #
@@ -11,6 +13,8 @@ type Query {
     hero(episode: Episode) : Character //返回
     #指定一个String类型的id
     human(id : String) : Human
+    #返回所有的人类列表
+    humans: [Human]
     #指定一个String类型的非空id
     droid(id: ID!) : Droid
 }
@@ -44,6 +48,8 @@ type Human implements Character {
     appearsIn: [Episode]!
     homePlanet: String
     secretBackstory : String @deprecated(reason : "We have decided that this is not canon")
+    # 自定义标量
+    email: Email!
 }
 
 #机器人
@@ -55,4 +61,3 @@ type Droid implements Character {
     primaryFunction: String
     secretBackstory : String @deprecated(reason : "We have decided that this is not canon")
 }
-

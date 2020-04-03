@@ -5,6 +5,7 @@ import com.github.dreamylost.dao.StarWarsData;
 import com.github.dreamylost.fetcher.GraphQLFetcherHelper;
 import com.github.dreamylost.resolver.GraphQLResolverHelper;
 import graphql.schema.DataFetcher;
+import graphql.schema.GraphQLScalarType;
 import graphql.schema.TypeResolver;
 import graphql.schema.idl.EnumValuesProvider;
 import org.dataloader.BatchLoader;
@@ -19,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
- * 数据加载、获取、类型解析，为GraphQLProvider提供服务
+ * 数据加载、获取、类型解析，自定义标量类型，为GraphQLProvider提供服务
  */
 @Component
 public class StarWarsWiring {
@@ -38,11 +39,17 @@ public class StarWarsWiring {
     //graphql类型系统中的角色是一个接口，需要确定要返回的具体graphql对象类型
     TypeResolver characterTypeResolver = GraphQLResolverHelper.characterTypeResolver;
 
+    //自定义标量
+    GraphQLScalarType Email = GraphQLResolverHelper.Email;
+
     //枚举类型解析
     EnumValuesProvider episodeResolver = GraphQLResolverHelper.episodeResolver;
 
     //人类 数据获取
     DataFetcher humanDataFetcher = GraphQLFetcherHelper.humanDataFetcher;
+
+    //人类，获取所有
+    DataFetcher humansDataFetcher = GraphQLFetcherHelper.humansDataFetcher;
 
     //机器人 数据获取
     DataFetcher droidDataFetcher = GraphQLFetcherHelper.droidDataFetcher;

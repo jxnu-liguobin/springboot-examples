@@ -15,27 +15,34 @@ public class Human implements FilmCharacter {
     final List<Integer> appearsIn;
     //人类的家园！（是行星）
     final String homePlanet;
+    //自定义标量类型
+    final String email;
 
-    public Human(String id, String name, List<String> friends, List<Integer> appearsIn, String homePlanet) {
+    public Human(String id, String name, List<String> friends, List<Integer> appearsIn, String homePlanet, String email) {
         this.id = id;
         this.name = name;
         this.friends = friends;
         this.appearsIn = appearsIn;
         this.homePlanet = homePlanet;
+        this.email = email;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public List<String> getFriends() {
         return friends;
     }
 
+    @Override
     public List<Integer> getAppearsIn() {
         return appearsIn;
     }
@@ -44,11 +51,8 @@ public class Human implements FilmCharacter {
         return homePlanet;
     }
 
-    @Override
-    public String toString() {
-        return "Human{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+    public String getEmail() {
+        return email;
     }
+
 }

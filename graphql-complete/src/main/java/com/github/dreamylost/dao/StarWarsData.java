@@ -29,7 +29,7 @@ public class StarWarsData {
                 "Luke Skywalker",
                 asList("1002", "1003", "2000", "2001"),
                 asList(4, 5, 6),
-                "Tatooine"
+                "Tatooine", "dreamylost@outlook.com"
         );
 
         Human vader = new Human(
@@ -37,7 +37,7 @@ public class StarWarsData {
                 "Darth Vader",
                 asList("1004"),
                 asList(4, 5, 6),
-                "Tatooine"
+                "Tatooine", "dreamylost@outlook.com"
         );
 
         Human han = new Human(
@@ -45,7 +45,7 @@ public class StarWarsData {
                 "Han Solo",
                 asList("1000", "1003", "2001"),
                 asList(4, 5, 6),
-                null
+                null, "dreamylost@outlook.com"
         );
 
         Human leia = new Human(
@@ -53,7 +53,7 @@ public class StarWarsData {
                 "Leia Organa",
                 asList("1000", "1002", "2000", "2001"),
                 asList(4, 5, 6),
-                "Alderaan"
+                "Alderaan", "dreamylost@outlook.com"
         );
 
         Human tarkin = new Human(
@@ -61,7 +61,7 @@ public class StarWarsData {
                 "Wilhuff Tarkin",
                 asList("1001"),
                 asList(4),
-                null
+                null, "dreamylost@outlook.com"
         );
 
         humanData.put("1000", luke);

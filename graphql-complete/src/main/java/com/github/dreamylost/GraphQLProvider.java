@@ -71,7 +71,7 @@ public class GraphQLProvider {
         URL url = Resources.getResource("starWarsSchemaAnnotated.graphqls");
         String sdl = Resources.toString(url, Charsets.UTF_8);
         GraphQLSchema graphQLSchema = buildSchema(sdl);
-        //本示例使用DataLoader技术来确保最有效地加载数据（在本例中为StarWars字符），通过graphql上下文对象将其传递给数据获取程序
+        //本示例使用DataLoader技术来确保最有效地加载数据，通过graphql上下文对象将其传递给数据获取程序
         //DataLoaderDispatcherInstrumentation也是一种Instrumentation，用来分发dataloader
         DataLoaderDispatcherInstrumentation dlInstrumentation = new DataLoaderDispatcherInstrumentation(dataLoaderRegistry, newOptions().includeStatistics(true));
         //ChainedInstrumentation可以组合多个仪器，TracingInstrumentation是追踪，FieldValidationBuilder是字段验证
@@ -81,7 +81,7 @@ public class GraphQLProvider {
     }
 
     //执行gql
-    public void executeGraphqlQuery(HttpServletResponse httpServletResponse, String operationName, String query, Map<String, Object> variables) throws IOException {
+    void executeGraphqlQuery(HttpServletResponse httpServletResponse, String operationName, String query, Map<String, Object> variables) throws IOException {
         //授权 执行请求
         Context context = contextProvider.newContext();
 
@@ -92,11 +92,12 @@ public class GraphQLProvider {
                 .context(context)
                 .build();
 
+        //executeAsync执行返回promise
         ExecutionResult executionResult = graphQL.execute(executionInput);
         handleNormalResponse(httpServletResponse, executionResult);
     }
 
-    public void handleNormalResponse(HttpServletResponse httpServletResponse, ExecutionResult executionResult) throws IOException {
+    private void handleNormalResponse(HttpServletResponse httpServletResponse, ExecutionResult executionResult) throws IOException {
         Map<String, Object> result = executionResult.toSpecification();
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         httpServletResponse.setCharacterEncoding("UTF-8");
@@ -109,42 +110,27 @@ public class GraphQLProvider {
         writer.close();
     }
 
-    //动态映射
-    //运行时织入包含DataFetcher、TypeResolvers和自定义Scalar，它们是制作完全可执行的schema所必需的。
-    private RuntimeWiring buildWiring() {
-        return RuntimeWiring.newRuntimeWiring()
-                //查询方法
-                .type(newTypeWiring("Query")
-                        .dataFetcher("hero", starWarsWiring.heroDataFetcher)
-                        .dataFetcher("human", starWarsWiring.humanDataFetcher)
-                        .dataFetcher("droid", starWarsWiring.droidDataFetcher)
-                )
-                .type(newTypeWiring("Human")
-                        .dataFetcher("friends", starWarsWiring.friendsDataFetcher)
-                )
-                .type(newTypeWiring("Droid")
-                        .dataFetcher("friends", starWarsWiring.friendsDataFetcher)
-                )
-
-                //数据类型
-                .type(newTypeWiring("Character")
-                        .typeResolver(starWarsWiring.characterTypeResolver)
-                )
-                .type(newTypeWiring("Episode")
-                        .enumValues(starWarsWiring.episodeResolver)
-                )
-                .build();
-    }
-
     //加载解析schema文件
     private GraphQLSchema buildSchema(String sdl) {
         //读取从resources下加载解析的gql schema文件的字符串
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
         //创建运行时类型织入
-        RuntimeWiring runtimeWiring = buildWiring();
+        RuntimeWiring.Builder builder = RuntimeWiring.newRuntimeWiring();
+        //动态映射
+        //运行时织入包含DataFetcher、TypeResolvers和自定义Scalar，它们是制作完全可执行的schema所必需的。
+        builder.type(newTypeWiring("Query")
+                .dataFetcher("hero", starWarsWiring.heroDataFetcher)
+                .dataFetcher("human", starWarsWiring.humanDataFetcher)
+                .dataFetcher("humans", starWarsWiring.humansDataFetcher)
+                .dataFetcher("droid", starWarsWiring.droidDataFetcher));
+        builder.type(newTypeWiring("Human").dataFetcher("friends", starWarsWiring.friendsDataFetcher));
+        builder.type(newTypeWiring("Droid").dataFetcher("friends", starWarsWiring.friendsDataFetcher));
+        builder.type(newTypeWiring("Character").typeResolver(starWarsWiring.characterTypeResolver));
+        builder.type(newTypeWiring("Episode").enumValues(starWarsWiring.episodeResolver));
+        builder.scalar(starWarsWiring.Email);
         SchemaGenerator schemaGenerator = new SchemaGenerator();
         //创建gql schema对象，构造可执行请求的gql
-        return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+        return schemaGenerator.makeExecutableSchema(typeRegistry, builder.build());
     }
 
 }

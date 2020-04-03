@@ -6,6 +6,8 @@ import graphql.schema.DataFetcher;
 
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 /**
  * @author liguobin@growingio.com
  * @version 1.0, 2020/3/31
@@ -17,6 +19,13 @@ public class GraphQLFetcherHelper {
         String id = environment.getArgument("id");
         Context ctx = environment.getContext();
         return ctx.getCharacterDataLoader().load(id);
+    };
+
+    //人类 数据读取器，获取所有s
+    //实际应用应该实现DataFetcher接口而不是使用DataLoaderRegistry
+    public static DataFetcher humansDataFetcher = environment -> {
+        Context ctx = environment.getContext();
+        return ctx.getCharacterDataLoader().loadMany(asList("1000", "1001", "1002", "1003"));
     };
 
     //机器人 数据获取
