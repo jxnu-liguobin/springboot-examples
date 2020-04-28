@@ -22,6 +22,7 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
     @Autowired
     private WebMvcConfig webMvcConfig;
 
+    //1.流程执行器
     @Bean
     public FlowExecutor flowExecutor() {
         return getFlowExecutorBuilder(flowRegistry())
@@ -29,13 +30,16 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
                 .build();
     }
 
+    //2.流程注册表
     @Bean
     public FlowDefinitionRegistry flowRegistry() {
         return getFlowDefinitionRegistryBuilder(flowBuilderServices())
                 .setBasePath("/WEB-INF")
+                //booking/booking-flow.xml
                 .addFlowLocationPattern("/**/*-flow.xml").build();
     }
 
+    //视图工厂
     @Bean
     public FlowBuilderServices flowBuilderServices() {
         return getFlowBuilderServicesBuilder()

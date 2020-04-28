@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * A user who can book hotels.
+ * 允许订购旅馆的用户
  */
 @Entity
 @Table(name = "Customer")

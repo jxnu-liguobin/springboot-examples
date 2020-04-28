@@ -39,6 +39,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/logoutSuccess");
     }
 
+    //3.流程处理
     @Bean
     public FlowHandlerMapping flowHandlerMapping() {
         FlowHandlerMapping handlerMapping = new FlowHandlerMapping();
@@ -47,6 +48,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return handlerMapping;
     }
 
+    //4.流程处理适配器  是DispatcherServlet和Spring Web Flow之间的桥梁
     @Bean
     public FlowHandlerAdapter flowHandlerAdapter() {
         FlowHandlerAdapter handlerAdapter = new FlowHandlerAdapter();
@@ -55,11 +57,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return handlerAdapter;
     }
 
+    //5.流程处理器的实现
     @Bean(name = "hotels/booking")
     public BookingFlowHandler BookingFlowHandler() {
         return new BookingFlowHandler();
     }
 
+    //tiles
     @Bean
     public AjaxUrlBasedViewResolver viewResolver() {
         AjaxUrlBasedViewResolver resolver = new AjaxUrlBasedViewResolver();

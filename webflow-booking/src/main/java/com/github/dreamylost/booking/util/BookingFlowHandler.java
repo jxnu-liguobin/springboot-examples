@@ -8,6 +8,9 @@ import org.springframework.webflow.mvc.servlet.AbstractFlowHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 实现自己的流程处理，异常时匹配/hotels/search
+ */
 public class BookingFlowHandler extends AbstractFlowHandler {
 
     private static final String DEFAULT_URL = "/hotels/search";
