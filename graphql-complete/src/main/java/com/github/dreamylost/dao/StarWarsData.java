@@ -1,8 +1,10 @@
 package com.github.dreamylost.dao;
 
 import com.github.dreamylost.domain.Droid;
+import com.github.dreamylost.domain.Episode;
 import com.github.dreamylost.domain.Human;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -27,41 +29,37 @@ public class StarWarsData {
         Human luke = new Human(
                 "1000",
                 "Luke Skywalker",
-                asList("1002", "1003", "2000", "2001"),
-                asList(4, 5, 6),
+                new ArrayList<>(),
+                asList(Episode.EMPIRE, Episode.JEDI),
                 "Tatooine", "dreamylost@outlook.com"
         );
 
         Human vader = new Human(
                 "1001",
                 "Darth Vader",
-                asList("1004"),
-                asList(4, 5, 6),
-                "Tatooine", "dreamylost@outlook.com"
+                asList(luke),
+                asList(Episode.EMPIRE, Episode.JEDI), "Tatooine", "dreamylost@outlook.com"
         );
 
         Human han = new Human(
                 "1002",
                 "Han Solo",
-                asList("1000", "1003", "2001"),
-                asList(4, 5, 6),
-                null, "dreamylost@outlook.com"
+                asList(vader, luke),
+                asList(Episode.EMPIRE, Episode.JEDI), null, "dreamylost@outlook.com"
         );
 
         Human leia = new Human(
                 "1003",
                 "Leia Organa",
-                asList("1000", "1002", "2000", "2001"),
-                asList(4, 5, 6),
-                "Alderaan", "dreamylost@outlook.com"
+                asList(vader, luke, han),
+                asList(Episode.EMPIRE, Episode.JEDI), "Alderaan", "dreamylost@outlook.com"
         );
 
         Human tarkin = new Human(
                 "1004",
                 "Wilhuff Tarkin",
-                asList("1001"),
-                asList(4),
-                null, "dreamylost@outlook.com"
+                asList(vader, luke, han, leia),
+                asList(Episode.EMPIRE, Episode.JEDI), null, "dreamylost@outlook.com"
         );
 
         humanData.put("1000", luke);
@@ -73,17 +71,15 @@ public class StarWarsData {
         Droid threepio = new Droid(
                 "2000",
                 "C-3PO",
-                asList("1000", "1002", "1003", "2001"),
-                asList(4, 5, 6),
-                "Protocol"
+                asList(vader, luke, han, leia),
+                asList(Episode.EMPIRE, Episode.JEDI), "Protocol"
         );
 
         Droid artoo = new Droid(
                 "2001",
                 "R2-D2",
-                asList("1000", "1002", "1003"),
-                asList(4, 5, 6),
-                "Astromech"
+                asList(vader, luke, han, leia),
+                asList(Episode.EMPIRE, Episode.JEDI), "Astromech"
         );
         droidData.put("2000", threepio);
         droidData.put("2001", artoo);

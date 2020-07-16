@@ -11,14 +11,14 @@ import java.util.List;
 public class Human implements FilmCharacter {
     final String id;
     final String name;
-    final List<String> friends;
-    final List<Integer> appearsIn;
+    final List<FilmCharacter> friends;
+    final List<Episode> appearsIn;
     //人类的家园！（是行星）
     final String homePlanet;
     //自定义标量类型
     final String email;
 
-    public Human(String id, String name, List<String> friends, List<Integer> appearsIn, String homePlanet, String email) {
+    public Human(String id, String name, List<FilmCharacter> friends, List<Episode> appearsIn, String homePlanet, String email) {
         this.id = id;
         this.name = name;
         this.friends = friends;
@@ -38,12 +38,12 @@ public class Human implements FilmCharacter {
     }
 
     @Override
-    public List<String> getFriends() {
+    public List<FilmCharacter> getFriends() {
         return friends;
     }
 
     @Override
-    public List<Integer> getAppearsIn() {
+    public List<Episode> getAppearsIn() {
         return appearsIn;
     }
 

@@ -7,7 +7,14 @@ package com.github.dreamylost.domain;
  * @time 2020年03月24日17:57:08
  */
 public enum Episode {
-    NEWHOPE,
-    EMPIRE,
-    JEDI
+
+    NEWHOPE(0),
+    EMPIRE(1),
+    JEDI(2);
+
+    Integer value;
+
+    Episode(Integer value) {
+        this.value = value;
+    }
 }

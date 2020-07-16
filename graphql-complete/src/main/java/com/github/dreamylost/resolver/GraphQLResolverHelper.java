@@ -9,6 +9,8 @@ import graphql.schema.GraphQLScalarType;
 import graphql.schema.TypeResolver;
 import graphql.schema.idl.EnumValuesProvider;
 
+import java.util.List;
+
 /**
  * @author liguobin@growingio.com
  * @version 1.0, 2020/3/31

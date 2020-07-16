@@ -5,6 +5,7 @@ import com.github.dreamylost.domain.FilmCharacter;
 import graphql.schema.DataFetcher;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -38,14 +39,14 @@ public class GraphQLFetcherHelper {
     //英雄 数据获取
     public static DataFetcher heroDataFetcher = environment -> {
         Context ctx = environment.getContext();
-        return ctx.getCharacterDataLoader().load("2001"); // R2D2
+        return ctx.getCharacterDataLoader().load("1002"); // R2D2
     };
 
     //朋友 数据获取
     public static DataFetcher friendsDataFetcher = environment -> {
         FilmCharacter character = environment.getSource();
-        List<String> friendIds = character.getFriends();
+        List<com.github.dreamylost.domain.FilmCharacter> friendIds = character.getFriends();
         Context ctx = environment.getContext();
-        return ctx.getCharacterDataLoader().loadMany(friendIds);
+        return ctx.getCharacterDataLoader().loadMany(friendIds.stream().map(FilmCharacter::getId).collect(Collectors.toList()));
     };
 }

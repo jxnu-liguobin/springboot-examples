@@ -10,7 +10,7 @@ schema {
 #定义查询
 type Query {
     #指定一个Episode类型的参数
-    hero(episode: Episode) : Character //返回
+    hero(episode: Episode) : Character
     #指定一个String类型的id
     human(id : String) : Human
     #返回所有的人类列表

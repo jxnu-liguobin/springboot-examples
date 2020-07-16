@@ -15,7 +15,7 @@ public interface FilmCharacter {
 
     String getName();
 
-    List<String> getFriends();
+    List<FilmCharacter> getFriends();
 
-    List<Integer> getAppearsIn();
+    List<Episode> getAppearsIn();
 }
